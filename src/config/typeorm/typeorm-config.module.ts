@@ -1,28 +1,24 @@
 import { Global, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import * as Entities from '@sergek/s3b/entity';
-import { TypeORMConfig } from './typeorm.config';
+import * as Entities from 'entity';
+import { TypeOrmConfig } from './typeorm-config';
 
 @Global()
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
-      useFactory: (config: TypeORMConfig) => {
+      useFactory: (config: TypeOrmConfig) => {
         const entities = Object.keys(Entities).map(
           entityKey => Entities[entityKey],
-        );
-        const subscribers = Object.keys(Subscribers).map(
-          subscriberKey => Subscribers[subscriberKey],
         );
 
         return {
           type: 'postgres',
-          ...config.fullConfig,
+          ...config.getFullSettings,
           entities,
-          subscribers,
         };
       },
     }),
   ],
 })
-export class TypeORMInfraModule {}
+export class TypeOrmGlobalModule {}

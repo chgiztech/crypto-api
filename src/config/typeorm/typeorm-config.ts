@@ -22,7 +22,7 @@ export class TypeOrmConfig {
   @Env()
   public readonly TYPEORM_PASSWORD: string;
 
-  get getFullSettings() {
+  public get getFullSettings() {
     return {
       database: this.TYPEORM_DATABASE,
       username: this.TYPEORM_USERNAME,
