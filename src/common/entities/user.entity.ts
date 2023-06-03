@@ -1,4 +1,4 @@
-import { Entity, Column, OneToMany, OneToOne } from 'typeorm';
+import { Entity, Column, OneToOne, JoinColumn } from 'typeorm';
 import BaseEntity from './base.entity';
 import { PassportEntity } from './passport.entity';
 
@@ -10,9 +10,9 @@ export class UserEntity extends BaseEntity {
   @Column({ type: 'text', unique: true })
   public readonly email: string;
 
-  @Column({ type: 'text' })
-  public readonly password: string;
-
   @OneToOne(() => PassportEntity, passport => passport.user)
-  passport: PassportEntity;
+  public readonly passport: PassportEntity;
+
+  //   @OneToOne(() => TokenEntity, token => token.user)
+  //   public readonly token: TokenEntity;
 }

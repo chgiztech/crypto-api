@@ -2,12 +2,19 @@ import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 import BaseEntity from './base.entity';
 import { UserEntity } from './user.entity';
 
+export enum PassportTypeEnum {
+  JWT = 'jwt',
+}
+
 @Entity({ name: 'passport' })
 export class PassportEntity extends BaseEntity {
   @Column({ type: 'text' })
-  password: string;
+  public readonly password: string;
 
   @OneToOne(() => UserEntity, user => user.passport)
   @JoinColumn({ name: 'user' })
-  user: UserEntity;
+  public readonly user: UserEntity;
+
+  @Column({ type: 'varchar' })
+  public readonly type: PassportTypeEnum;
 }

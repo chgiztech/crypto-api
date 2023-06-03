@@ -6,11 +6,11 @@ import {
 
 export default abstract class BaseEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  public readonly id: number;
 
   @CreateDateColumn()
-  createdAt?: Date;
+  public readonly createdAt?: Date;
 
   @UpdateDateColumn()
-  updatedAt?: Date;
+  public readonly updatedAt?: Date;
 }
