@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CookieOptions } from 'express';
+import { CookieOptions, Response } from 'express';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
@@ -7,8 +7,13 @@ import { Repository } from 'typeorm';
 import { JwtConfig } from 'config';
 import { TokenEntity, UserEntity } from 'entities';
 
-import { TokensInterface } from './interfaces/tokens.interface';
+import { TokenInterface } from './interfaces/tokens.interface';
 import { PayloadInterface } from './interfaces/payload.interface';
+
+enum TokenType {
+  AccessToken = 'accessToken',
+  RefreshToken = 'refreshToken',
+}
 
 @Injectable()
 export class TokenService {
@@ -21,7 +26,8 @@ export class TokenService {
 
   public async getjwtTokens(
     user: UserEntity | PayloadInterface,
-  ): Promise<TokensInterface> {
+    res: Response,
+  ): Promise<TokenInterface> {
     const payload: PayloadInterface = {
       username: user.username,
       id: user.id,
@@ -38,10 +44,12 @@ export class TokenService {
       httpOnly: true,
     };
 
+    res.cookie(TokenType.AccessToken, accessToken, cookieOptions);
+    res.cookie(TokenType.RefreshToken, refreshToken, cookieOptions);
+
     return {
       accessToken,
       refreshToken,
-      cookieOptions,
     };
   }
 
@@ -57,13 +65,16 @@ export class TokenService {
       .getRawOne();
   }
 
-  public async saveToken(user: UserEntity, refreshToken: string) {
+  public async saveRefreshToken(
+    user: UserEntity,
+    refreshToken: string,
+  ): Promise<void> {
     const hashRefreshToken: string = await this.generateRefreshTokenHash(
       refreshToken,
     );
 
     await this.tokenRepository.save({
-      ...user,
+      user,
       saveRefreshToken: hashRefreshToken,
     });
   }

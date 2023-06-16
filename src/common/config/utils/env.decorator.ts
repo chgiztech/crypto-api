@@ -1,12 +1,12 @@
-type EnvValueType = string | number | boolean | undefined;
+import { config, EnvValueType } from './conifg';
 
-interface Options {
+interface EnvOptions {
   readonly required?: boolean;
 }
 
-export function Env(options?: Options) {
+export function Env(options?: EnvOptions) {
   return function (target: any, key: string): void {
-    const value = process.env[key] as EnvValueType;
+    const value = config()[key] as EnvValueType;
 
     if (options?.required && !value) {
       throw new Error(`Environment variable ${key} is required`);

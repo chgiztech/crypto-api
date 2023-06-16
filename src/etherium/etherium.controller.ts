@@ -3,15 +3,15 @@ import { EtheriumService } from './etherium.service';
 
 @Controller('etherium-net')
 export class EtheriumController {
-//   constructor(private readonly ethersService: EtheriumService) {}
+  constructor(private readonly etheriumService: EtheriumService) {}
 
-//   @Get('balance')
-//   public async getBalance() {
-//     return await this.ethersService.getBalance();
-//   }
+  @Get('balance/:address')
+  public async getBalance() {
+    // return await this.etheriumService.createProvider();
+  }
 
-//   @Post('balance')
-//   public async setNumber(@Body('num') num: number) {
-//     return await this.ethersService.setNumber(num);
-//   }
+  //   @Post('balance')
+  //   public async setNumber(@Body('num') num: number) {
+  //     return await this.ethersService.setNumber(num);
+  //   }
 }

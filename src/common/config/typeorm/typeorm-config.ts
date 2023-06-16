@@ -1,8 +1,5 @@
 import { IsBoolean, IsInt, IsString } from 'class-validator';
-import { config } from 'dotenv';
 import { Env } from '../utils/env.decorator';
-
-config();
 
 export class TypeOrmConfig {
   @IsString()
@@ -10,19 +7,19 @@ export class TypeOrmConfig {
   public readonly TYPEORM_HOST: string;
 
   @IsInt()
-  @Env()
+  @Env({ required: true })
   public readonly TYPEORM_PORT: number;
 
   @IsString()
-  @Env()
+  @Env({ required: true })
   public readonly TYPEORM_DATABASE: string;
 
   @IsString()
-  @Env()
+  @Env({ required: true })
   public readonly TYPEORM_USERNAME: string;
 
   @IsString()
-  @Env()
+  @Env({ required: true })
   public readonly TYPEORM_PASSWORD: string;
 
   @IsBoolean()

@@ -1,25 +1,21 @@
 import { IsString } from 'class-validator';
-import { config } from 'dotenv';
-
 import { Env } from '../utils/env.decorator';
-
-config();
 
 export class JwtConfig {
   @IsString()
-  @Env()
+  @Env({ required: true })
   public readonly JWT_ACCESS_TOKEN_SECRET: string;
 
   @IsString()
-  @Env()
+  @Env({ required: true })
   public readonly JWT_ACCESS_TOKEN_EXPIRES: string;
 
   @IsString()
-  @Env()
+  @Env({ required: true })
   public readonly JWT_REFRESH_TOKEN_SECRET: string;
 
   @IsString()
-  @Env()
+  @Env({ required: true })
   public readonly JWT_REFRESH_TOKEN_EXPIRES: string;
 
   get accessToken() {

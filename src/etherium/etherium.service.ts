@@ -1,35 +1,47 @@
 import { Injectable } from '@nestjs/common';
-// import Web3 from 'web3';
-// import MyContract from '../contracts/build/contracts/MyContract.json';
+import Web3 from 'web3';
 
-// const rpcEndpoint = 'http://localhost:8545';
-// const contractAdress = '0x06F56FCD25fE62f04131AE7f5c7481400ef5bd0B';
-
-// const web3 = new Web3(rpcEndpoint);
-// const contract = new web3.eth.Contract(MyContract.abi as any, contractAdress);
-
-// interface ContractInterface<TValue> {
-//   contractName: string;
-//   abi: Array<TValue>;
-// }
+enum Web3Enum {
+  ETH = 'eth',
+  UTILS = 'utils',
+}
 
 @Injectable()
 export class EtheriumService {
-//   public async createProvider(payload) {
-//     // const provider = new Web3.providers.HttpProvider();
-//   }
+  private readonly web3: Web3;
+  private readonly eth: Web3[Web3Enum.ETH];
+  private readonly utils: Web3[Web3Enum.UTILS];
 
-//   public async getBalance() {
-//     return await contract.methods.getNumber().call();
-//   }
+  constructor(
+    private readonly host: string,
+    private readonly username: string,
+    private readonly password: string,
+  ) {
+    this.web3 = new Web3(
+      new Web3.providers.HttpProvider(host, {
+        headers: [
+          {
+            name: 'Authorization',
+            value: `Basic ${username}:${password}`,
+          },
+        ],
+      }),
+    );
+    this.eth = this.web3.eth;
+    this.utils = this.web3.utils;
+  }
 
-//   public async setNumber(num: number) {
-//     const accounts = await web3.eth.getAccounts();
+  //   public async getBalance() {
+  //     return await contract.methods.getNumber().call();
+  //   }
 
-//     const result = await contract.methods
-//       .setNumber(num)
-//       .send({ from: accounts[0] });
+  //   public async setNumber(num: number) {
+  //     const accounts = await web3.eth.getAccounts();
 
-//     return 'success';
-//   }
+  //     const result = await contract.methods
+  //       .setNumber(num)
+  //       .send({ from: accounts[0] });
+
+  //     return 'success';
+  //   }
 }

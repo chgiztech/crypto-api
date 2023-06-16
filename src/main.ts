@@ -1,9 +1,8 @@
 import { NestFactory } from '@nestjs/core';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
-import { TypeormExceptionFilter } from '@/common/filters/typeorm-exception.filter';
-
+import { TypeormExceptionFilter } from './utils/typeorm-exception.filter';
 import { AppModule } from './app.module';
+import { useSwagger } from './utils/use-swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -12,9 +11,7 @@ async function bootstrap() {
 
   app.useGlobalFilters(new TypeormExceptionFilter());
 
-  const options = new DocumentBuilder().setTitle('ETH NET API').build();
-  const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('/api/docs', app, document);
+  useSwagger(app);
 
   await app.listen(3000);
 }

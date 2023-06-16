@@ -1,7 +1,4 @@
-import { CookieOptions } from 'express';
-
-export interface TokensInterface {
+export interface TokenInterface {
   readonly accessToken: string;
   readonly refreshToken: string;
-  readonly cookieOptions: CookieOptions;
 }
