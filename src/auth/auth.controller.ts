@@ -1,16 +1,21 @@
-import { Controller, Post, Body, UseGuards, Res, Put } from '@nestjs/common';
+import { Body, Controller, Post, Put, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 
-import { AuthService } from './auth.service';
-import { JwtAuthGuard } from './utils/jwt-auth.guard';
-import { LoginDto } from './dto/login.dto';
-import { RegisterDto } from './dto/register.dto';
 import { AuthResponse } from './auth.response';
+import { AuthService } from './auth.service';
+import { LoginDto } from './dto/login.dto';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
+import { RegisterDto } from './dto/register.dto';
+import { Web3LoginDto } from './dto/web3-login.dto';
+import { JwtAuthGuard } from './utils/jwt-auth.guard';
+import { Web3AuthService } from './web3-auth.service';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly web3AuthService: Web3AuthService,
+  ) {}
 
   @Post('login')
   public async login(
@@ -18,6 +23,16 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ): Promise<AuthResponse> {
     return new AuthResponse(await this.authService.login(loginDto, res));
+  }
+
+  @Post('web3-login')
+  public async web3Login(
+    @Body() web3LoginDto: Web3LoginDto,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    return new AuthResponse(
+      await this.web3AuthService.web3Login(web3LoginDto, res),
+    );
   }
 
   @Post('register')

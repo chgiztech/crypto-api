@@ -73,10 +73,22 @@ export class TokenService {
       refreshToken,
     );
 
-    await this.tokenRepository.save({
-      user,
-      saveRefreshToken: hashRefreshToken,
+    const token = await this.tokenRepository.findOne({
+      where: {
+        user: user.id,
+      },
     });
+
+    if (token) {
+      await this.tokenRepository.update(token.id, {
+        saveRefreshToken: hashRefreshToken,
+      });
+    } else {
+      await this.tokenRepository.save({
+        user,
+        saveRefreshToken: hashRefreshToken,
+      });
+    }
   }
 
   public async generateRefreshTokenHash(token: string): Promise<string> {

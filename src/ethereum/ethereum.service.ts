@@ -1,16 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import Web3 from 'web3';
-
-enum Web3Enum {
-  ETH = 'eth',
-  UTILS = 'utils',
-}
+import { Eth } from 'web3-eth';
+import { Utils } from 'web3-utils';
 
 @Injectable()
-export class EtheriumService {
+export class EthereumService {
   private readonly web3: Web3;
-  private readonly eth: Web3[Web3Enum.ETH];
-  private readonly utils: Web3[Web3Enum.UTILS];
+  public readonly eth: Eth;
+  public readonly utils: Utils;
 
   constructor(
     private readonly host: string,
@@ -30,18 +27,4 @@ export class EtheriumService {
     this.eth = this.web3.eth;
     this.utils = this.web3.utils;
   }
-
-  //   public async getBalance() {
-  //     return await contract.methods.getNumber().call();
-  //   }
-
-  //   public async setNumber(num: number) {
-  //     const accounts = await web3.eth.getAccounts();
-
-  //     const result = await contract.methods
-  //       .setNumber(num)
-  //       .send({ from: accounts[0] });
-
-  //     return 'success';
-  //   }
 }

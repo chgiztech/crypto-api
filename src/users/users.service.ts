@@ -6,6 +6,8 @@ import { PassportEntity, PassportTypeEnum, UserEntity } from 'entities';
 
 import { CreateUserDto } from './dto/create-user.dto';
 import { FindOneInterface } from './interfaces/find-one.interface';
+import { FindByAddressInterface } from './interfaces/find-by-address.interface';
+import { CreateUserByAddressDto } from './dto/create-user-by-address.dto';
 
 @Injectable()
 export class UsersService {
@@ -23,6 +25,14 @@ export class UsersService {
     });
   }
 
+  public async findByAddress(
+    where: FindByAddressInterface,
+  ): Promise<UserEntity> {
+    return this.usersRepository.findOne({
+      where,
+    });
+  }
+
   public async create(createUserDto: CreateUserDto): Promise<UserEntity> {
     const password = await this.generatePasswordHash(createUserDto.password);
 
@@ -35,6 +45,16 @@ export class UsersService {
       type: PassportTypeEnum.JWT,
       password,
       user,
+    });
+
+    return user;
+  }
+
+  public async createByAddress(
+    createUserByAdress: CreateUserByAddressDto,
+  ): Promise<UserEntity> {
+    const user = await this.usersRepository.save({
+      ...createUserByAdress,
     });
 
     return user;
