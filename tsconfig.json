@@ -19,7 +19,7 @@
 
     "paths": {
       "@/*": ["./*"],
-      "config": ["common/config"],
+      "enums": ["common/enums"],
       "entities": ["common/entities"],
       "interfaces": ["common/interfaces"],
       "filters/*": ["filters/*"],

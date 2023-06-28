@@ -1,9 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TypeOrmGlobalModule } from 'config';
 import { PassportEntity, TokenEntity, UserEntity } from 'entities';
-
 import { UsersService } from './users.service';
+import { TypeOrmGlobalModule } from '@/config/typeorm/typeorm-config.module';
 
 @Module({
   imports: [

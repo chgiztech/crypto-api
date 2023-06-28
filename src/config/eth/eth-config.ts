@@ -1,7 +1,7 @@
 import { IsString } from 'class-validator';
 import { Env } from '../utils/env.decorator';
 
-export class EthereumConfig {
+export class EthConfig {
   @IsString()
   @Env()
   public readonly ETH_RPC_BASE_URL: string;

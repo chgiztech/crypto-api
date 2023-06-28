@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { JwtInterface } from 'interfaces';
 
-export class AuthResponse {
+export class AuthWeb3Response {
   @ApiProperty()
   public readonly accessToken: string;
   @ApiProperty()

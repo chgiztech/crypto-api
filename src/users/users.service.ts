@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 import { PassportEntity, PassportTypeEnum, UserEntity } from 'entities';
-
 import { CreateUserDto } from './dto/create-user.dto';
 import { FindOneInterface } from './interfaces/find-one.interface';
 import { FindByAddressInterface } from './interfaces/find-by-address.interface';

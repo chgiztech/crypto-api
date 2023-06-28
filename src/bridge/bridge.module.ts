@@ -1,11 +1,13 @@
-import { EthereumModule } from '@/ethereum/ethereum.module';
+import { EthModule } from '@/eth/eth.module';
 import { Module } from '@nestjs/common';
 import { BridgeController } from './bridge.controller';
-import { ClientEthereumService } from './services/client-ethereum.service';
+import { BridgeFactory } from './bridge.factory';
+import { ClientEthService } from './client-eth.service';
+import { ClientBtcService } from './client-btc.service';
 
 @Module({
-  imports: [EthereumModule],
+  imports: [EthModule],
   controllers: [BridgeController],
-  providers: [ClientEthereumService],
+  providers: [BridgeFactory, ClientEthService, ClientBtcService],
 })
 export class BridgeModule {}

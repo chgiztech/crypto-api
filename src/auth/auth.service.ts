@@ -4,24 +4,29 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { Response } from 'express';
+import { JwtService } from '@nestjs/jwt';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import { UserEntity } from 'entities';
-
+import { CookieOptions, Response } from 'express';
+import { JwtTokenTypeEnum } from 'enums';
+import { JwtInterface, PayloadInterface } from 'interfaces';
+import { TokenEntity, UserEntity } from 'entities';
 import { UsersService } from '@/users/users.service';
-import { TokenService } from '@/token/token.service';
-import { PayloadInterface } from '@/token/interfaces/payload.interface';
-import { TokenInterface } from '@/token/interfaces/tokens.interface';
-
+import { JwtConfig } from '@/config/jwt/jwt-config';
 import { LoginDto } from './dto/login.dto';
-import { RegisterDto } from './dto/register.dto';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
+import { RegisterDto } from './dto/register.dto';
+import { generateHash } from './utils/generate-hash.util';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly usersService: UsersService,
-    private readonly tokenService: TokenService,
+    private readonly jwtService: JwtService,
+    private readonly jwtConfig: JwtConfig,
+    @InjectRepository(TokenEntity)
+    private readonly tokenRepository: Repository<TokenEntity>,
   ) {}
 
   public async validate(
@@ -43,35 +48,32 @@ export class AuthService {
     return user;
   }
 
-  public async login(
-    loginDto: LoginDto,
-    res: Response,
-  ): Promise<TokenInterface> {
+  public async login(loginDto: LoginDto, res: Response): Promise<JwtInterface> {
     const user = await this.validate(loginDto.username, loginDto.password);
-    const tokens = await this.tokenService.getjwtTokens(user, res);
-    await this.tokenService.saveRefreshToken(user, tokens.refreshToken);
+    const tokens = await this.getjwtTokens(user, res);
+    await this.saveRefreshToken(user, tokens.refreshToken);
     return tokens;
   }
 
   public async register(
     registerDto: RegisterDto,
     res: Response,
-  ): Promise<TokenInterface> {
+  ): Promise<JwtInterface> {
     const user = await this.usersService.create(registerDto);
-    const tokens = await this.tokenService.getjwtTokens(user, res);
-    await this.tokenService.saveRefreshToken(user, tokens.refreshToken);
+    const tokens = await this.getjwtTokens(user, res);
+    await this.saveRefreshToken(user, tokens.refreshToken);
     return tokens;
   }
 
   public async refreshToken(
     refreshTokenDto: RefreshTokenDto,
     res: Response,
-  ): Promise<TokenInterface> {
-    const payload: PayloadInterface = this.tokenService.decode(
+  ): Promise<JwtInterface> {
+    const payload: PayloadInterface = this.jwtService.decode(
       refreshTokenDto.refreshToken,
     ) as PayloadInterface;
 
-    const options = await this.tokenService.findOne(payload.id);
+    const options = await this.findOne(payload.id);
 
     if (!options?.saveRefreshToken) {
       throw new UnauthorizedException();
@@ -86,6 +88,67 @@ export class AuthService {
       throw new UnauthorizedException();
     }
 
-    return this.tokenService.getjwtTokens(payload, res);
+    return this.getjwtTokens(payload, res);
+  }
+
+  private async getjwtTokens(
+    user: UserEntity | PayloadInterface,
+    res: Response,
+  ): Promise<JwtInterface> {
+    const payload: PayloadInterface = {
+      username: user.username,
+      id: user.id,
+    } as PayloadInterface;
+
+    const accessToken: string = this.jwtService.sign(payload);
+    const refreshToken: string = this.jwtService.sign(payload, {
+      secret: this.jwtConfig.refreshToken.secret,
+      expiresIn: this.jwtConfig.refreshToken.expiresIn,
+    });
+
+    const cookieOptions: CookieOptions = {
+      expires: new Date(Number(this.jwtConfig.accessToken.expiresIn) * 1000),
+      httpOnly: true,
+    };
+
+    res.cookie(JwtTokenTypeEnum.AccessToken, accessToken, cookieOptions);
+    res.cookie(JwtTokenTypeEnum.RefreshToken, refreshToken, cookieOptions);
+
+    return {
+      accessToken,
+      refreshToken,
+    };
+  }
+
+  private async findOne(id: number): Promise<TokenEntity> {
+    return await this.tokenRepository
+      .createQueryBuilder('token')
+      .where('token.user = :id', { id })
+      .select('token.saveRefreshToken', 'saveRefreshToken')
+      .getRawOne();
+  }
+
+  private async saveRefreshToken(
+    user: UserEntity,
+    refreshToken: string,
+  ): Promise<void> {
+    const hash: string = await generateHash(refreshToken);
+
+    const token = await this.tokenRepository.findOne({
+      where: {
+        user: user.id,
+      },
+    });
+
+    if (token) {
+      await this.tokenRepository.update(token.id, {
+        saveRefreshToken: hash,
+      });
+    } else {
+      await this.tokenRepository.save({
+        user,
+        saveRefreshToken: hash,
+      });
+    }
   }
 }

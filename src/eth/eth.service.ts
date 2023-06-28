@@ -4,7 +4,7 @@ import { Eth } from 'web3-eth';
 import { Utils } from 'web3-utils';
 
 @Injectable()
-export class EthereumService {
+export class EthService {
   private readonly web3: Web3;
   public readonly eth: Eth;
   public readonly utils: Utils;
@@ -26,5 +26,11 @@ export class EthereumService {
     );
     this.eth = this.web3.eth;
     this.utils = this.web3.utils;
+  }
+
+  public async getBalance(address: string): Promise<string> {
+    const amount = await this.eth.getBalance(address);
+
+    return amount;
   }
 }

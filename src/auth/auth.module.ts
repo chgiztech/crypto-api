@@ -1,17 +1,21 @@
 import { Module } from '@nestjs/common';
-
-import { TokenModule } from '@/token/token.module';
+import { TokenEntity } from 'entities';
 import { UsersModule } from '@/users/users.module';
-
-import { EthereumModule } from '@/ethereum/ethereum.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { JwtStrategy } from './utils/Jwt.strategy';
-import { Web3AuthService } from './web3-auth.service';
+import { JwtStrategy } from './strategy/Jwt.strategy';
+import { TypeOrmGlobalModule } from '@/config/typeorm/typeorm-config.module';
+import { JwtConfigModule } from '@/config/jwt/jwt-config.module';
 
 @Module({
-  imports: [EthereumModule, UsersModule, TokenModule],
+    imports: [
+        UsersModule,
+    JwtConfigModule,
+    TypeOrmGlobalModule,
+    TypeOrmModule.forFeature([TokenEntity]),
+  ],
   controllers: [AuthController],
-  providers: [AuthService, Web3AuthService, JwtStrategy],
+  providers: [AuthService, JwtStrategy],
 })
 export class AuthModule {}
