@@ -1,7 +1,6 @@
 import { NestFactory } from '@nestjs/core';
-
-import { TypeormExceptionFilter } from './utils/typeorm-exception.filter';
 import { AppModule } from './app.module';
+import { TypeormExceptionFilter } from './utils/typeorm-exception.filter';
 import { useSwagger } from './utils/use-swagger';
 
 async function bootstrap() {

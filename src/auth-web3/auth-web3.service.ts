@@ -1,23 +1,21 @@
+import { JwtConfig } from '@/config/jwt/jwt-config';
+import { UsersService } from '@/users/users.service';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CookieOptions, Response } from 'express';
-import { Repository } from 'typeorm';
-import { JwtTokenTypeEnum } from 'enums';
 import { TokenEntity, UserEntity } from 'entities';
+import { JwtTokenTypeEnum } from 'enums';
+import { CookieOptions, Response } from 'express';
 import { JwtInterface, PayloadInterface } from 'interfaces';
-import { EthService } from '@/eth/eth.service';
-import { UsersService } from '@/users/users.service';
-import { JwtConfig } from '@/config/jwt/jwt-config';
-import { generateHash } from './utils/generate-hash.util';
+import { Repository } from 'typeorm';
 import { Web3LoginDto } from './dto/web3-login.dto';
+import { generateHash } from './utils/generate-hash.util';
+import { EthereumService } from '@/ethereum/ethereum.service';
 
 @Injectable()
 export class AuthWeb3Service {
-  private readonly signMessage = 'Authentication';
-
   constructor(
-    private readonly web3: EthService,
+    private readonly ethereumService: EthereumService,
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
     private readonly jwtConfig: JwtConfig,
@@ -26,9 +24,7 @@ export class AuthWeb3Service {
   ) {}
 
   public async web3Login(web3LoginDto: Web3LoginDto, res: Response) {
-    const address = this.web3.eth.accounts
-      .recover(this.web3.utils.toHex(this.signMessage), web3LoginDto.signature)
-      .toLowerCase();
+    const address = this.ethereumService.getAddress(web3LoginDto.signature);
 
     let user = (await this.usersService.findByAddress({
       address,
