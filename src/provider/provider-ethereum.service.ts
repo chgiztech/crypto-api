@@ -1,7 +1,9 @@
 import { EthereumService } from '@/ethereum/ethereum.service';
 import { ProviderProxyInterface } from './interfaces/provider-proxy.interface';
 import { GetBalanceResponse } from './provider.response';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class ProviderEthereumService implements ProviderProxyInterface {
   constructor(private readonly ethereumService: EthereumService) {}
 
