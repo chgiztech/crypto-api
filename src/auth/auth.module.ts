@@ -5,17 +5,18 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './strategy/Jwt.strategy';
-import { TypeOrmGlobalModule } from '@/config/typeorm/typeorm-config.module';
-import { JwtConfigModule } from '@/config/jwt/jwt-config.module';
+import { JwtConfigModule } from '@/config/jwt/jwt.config-module';
+import { TypeOrmInfraModule } from '@/config/typeorm/typeorm.infra-module';
+import { AuthWeb3Service } from './auth-web3.service';
 
 @Module({
-    imports: [
-        UsersModule,
+  imports: [
+    UsersModule,
     JwtConfigModule,
-    TypeOrmGlobalModule,
+    TypeOrmInfraModule,
     TypeOrmModule.forFeature([TokenEntity]),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService, JwtStrategy, AuthWeb3Service],
 })
 export class AuthModule {}

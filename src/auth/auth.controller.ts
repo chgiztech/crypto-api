@@ -7,10 +7,15 @@ import { LoginDto } from './dto/login.dto';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { RegisterDto } from './dto/register.dto';
 import { JwtAuthGuard } from './guard/jwt-auth.guard';
+import { Web3LoginDto } from './dto/web3-login.dto';
+import { AuthWeb3Service } from './auth-web3.service';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly authWeb3Service: AuthWeb3Service,
+  ) {}
 
   @Post('login')
   public async login(
@@ -26,6 +31,16 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ): Promise<AuthResponse> {
     return new AuthResponse(await this.authService.register(registerDto, res));
+  }
+
+  @Post('web3-login')
+  public async web3Login(
+    @Body() web3LoginDto: Web3LoginDto,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    return new AuthResponse(
+      await this.authWeb3Service.web3Login(web3LoginDto, res),
+    );
   }
 
   @UseGuards(JwtAuthGuard)

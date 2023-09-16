@@ -13,7 +13,7 @@ import { JwtTokenTypeEnum } from 'enums';
 import { JwtInterface, PayloadInterface } from 'interfaces';
 import { TokenEntity, UserEntity } from 'entities';
 import { UsersService } from '@/users/users.service';
-import { JwtConfig } from '@/config/jwt/jwt-config';
+import { JwtConfig } from '@/config/jwt/jwt.config';
 import { LoginDto } from './dto/login.dto';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { RegisterDto } from './dto/register.dto';
@@ -22,11 +22,11 @@ import { generateHash } from './utils/generate-hash.util';
 @Injectable()
 export class AuthService {
   constructor(
+    @InjectRepository(TokenEntity)
+    private readonly tokenRepository: Repository<TokenEntity>,
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
     private readonly jwtConfig: JwtConfig,
-    @InjectRepository(TokenEntity)
-    private readonly tokenRepository: Repository<TokenEntity>,
   ) {}
 
   public async validate(
@@ -91,7 +91,7 @@ export class AuthService {
     return this.getjwtTokens(payload, res);
   }
 
-  private async getjwtTokens(
+  public async getjwtTokens(
     user: UserEntity | PayloadInterface,
     res: Response,
   ): Promise<JwtInterface> {
@@ -128,7 +128,7 @@ export class AuthService {
       .getRawOne();
   }
 
-  private async saveRefreshToken(
+  public async saveRefreshToken(
     user: UserEntity,
     refreshToken: string,
   ): Promise<void> {

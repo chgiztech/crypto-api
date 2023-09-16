@@ -1,16 +1,20 @@
-import { EthConfig } from '@/config/eth/eth-config';
-import { EthConfigModule } from '@/config/eth/eth-config.module';
 import { Module } from '@nestjs/common';
 import { EthereumService } from './ethereum.service';
+import { EthereumConfigModule } from '@/config/ethereum/ethereum.config-module';
+import { EthereumConfig } from '@/config/ethereum/ethereum.config';
 
 @Module({
-  imports: [EthConfigModule],
+  imports: [EthereumConfigModule],
   providers: [
     {
       provide: EthereumService,
-      inject: [EthConfig],
-      useFactory: (config: EthConfig): EthereumService => {
-        return new EthereumService(config.host, config.username, config.password);
+      inject: [EthereumConfig],
+      useFactory: (config: EthereumConfig): EthereumService => {
+        return new EthereumService(
+          config.host,
+          config.username,
+          config.password,
+        );
       },
     },
   ],

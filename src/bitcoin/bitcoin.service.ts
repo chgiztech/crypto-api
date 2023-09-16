@@ -1,23 +1,20 @@
 import { HttpService, Injectable } from '@nestjs/common';
 import { lastValueFrom } from 'rxjs';
-import { BitcoinMethods } from './enums/bitcoin-methods.enum';
+
+enum BitcoinMethods {
+  LIST_UNSPENT = 'listunspent',
+}
 
 @Injectable()
 export class BitcoinService {
   constructor(private readonly httpService: HttpService) {}
-
-  public async createWallet(
-    name: string,
-  ): Promise<{ name: string; warning: string }> {
-    return this.rpcCall(BitcoinMethods.CREATE_WALLET, '', name);
-  }
 
   public async listUnspent(
     address: string,
     minconf = 6,
     maxconf = 9999999,
   ): Promise<any> {
-    const list = await this.rpcCall<any>(
+    const list = await this.call<any>(
       BitcoinMethods.LIST_UNSPENT,
       `wallet/main`,
       minconf,
@@ -31,7 +28,7 @@ export class BitcoinService {
     }));
   }
 
-  private async rpcCall<R>(
+  private async call<R>(
     method: string,
     url = '',
     ...params: unknown[]
@@ -39,8 +36,6 @@ export class BitcoinService {
     try {
       const response = await lastValueFrom(
         this.httpService.post<{ result: R }>(url, {
-          jsonrpc: '1.0',
-          id: 'crypto',
           method,
           params,
         }),

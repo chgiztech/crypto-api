@@ -1,8 +1,7 @@
 import { Global, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as Entities from 'entities';
-
-import { TypeOrmConfig } from './typeorm-config';
+import { TypeOrmConfig } from './typeorm.config';
 
 @Global()
 @Module({
@@ -30,4 +29,4 @@ import { TypeOrmConfig } from './typeorm-config';
     }),
   ],
 })
-export class TypeOrmGlobalModule {}
+export class TypeOrmInfraModule {}

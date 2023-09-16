@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PassportEntity, TokenEntity, UserEntity } from 'entities';
 import { UsersService } from './users.service';
-import { TypeOrmGlobalModule } from '@/config/typeorm/typeorm-config.module';
+import { TypeOrmInfraModule } from '@/config/typeorm/typeorm.infra-module';
 
 @Module({
   imports: [
-    TypeOrmGlobalModule,
+    TypeOrmInfraModule,
     TypeOrmModule.forFeature([UserEntity, TokenEntity, PassportEntity]),
   ],
   providers: [UsersService],
