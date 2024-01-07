@@ -1,13 +1,13 @@
-import { BitcoinModule } from '@/bitcoin/bitcoin.module';
+import { EthModule } from '@/eth/eth.module';
 import { Module } from '@nestjs/common';
+import { ProviderBitcoinService } from './provider-bitcoin.service';
+import { ProviderEthereumService } from './provider-ethereum.service';
 import { ProviderController } from './provider.controller';
 import { ProviderFactory } from './provider.factory';
-import { EthereumModule } from '@/ethereum/ethereum.module';
-import { ProviderEthereumService } from './provider-ethereum.service';
-import { ProviderBitcoinService } from './provider-bitcoin.service';
+import { BtcModule } from '@/btc/btc.module';
 
 @Module({
-  imports: [EthereumModule, BitcoinModule],
+  imports: [EthModule, BtcModule],
   controllers: [ProviderController],
   providers: [ProviderFactory, ProviderEthereumService, ProviderBitcoinService],
 })

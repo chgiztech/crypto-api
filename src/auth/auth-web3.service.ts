@@ -1,10 +1,10 @@
+import { EthereumService } from '@/eth/eth.service';
+import { UsersService } from '@/users/users.service';
 import { Injectable } from '@nestjs/common';
 import { UserEntity } from 'entities';
 import { Response } from 'express';
-import { EthereumService } from '@/ethereum/ethereum.service';
-import { UsersService } from '@/users/users.service';
-import { Web3LoginDto } from './dto/web3-login.dto';
 import { AuthService } from './auth.service';
+import { Web3LoginDto } from './dto/web3-login.dto';
 
 @Injectable()
 export class AuthWeb3Service {

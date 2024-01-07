@@ -1,13 +1,13 @@
-import { BitcoinService } from '@/bitcoin/bitcoin.service';
-import { ProviderProxyInterface } from './interfaces/provider-proxy.interface';
+import { BtcService } from '@/btc/btc.service';
 import { Injectable } from '@nestjs/common';
+import { ProviderProxyInterface } from './interfaces/provider-proxy.interface';
 
 @Injectable()
 export class ProviderBitcoinService implements ProviderProxyInterface {
-  constructor(private readonly bitcoinService: BitcoinService) {}
+  constructor(private readonly btcService: BtcService) {}
 
   public async getBalance(address: string): Promise<any> {
-    const unspents = await this.bitcoinService.listUnspent(address, 0);
+    const unspents = await this.btcService.listUnspent(address, 0);
 
     const balance = unspents.reduce(
       (total, unspent) => total + unspent.amount,

@@ -1,7 +1,7 @@
 import { IsString } from 'class-validator';
 import { EnvValue } from '../utils/env-value.decorator';
 
-export class BitcoinConfig {
+export class BtcConfig {
   @IsString()
   @EnvValue()
   public readonly BTC_RPC_BASE_URL: string;

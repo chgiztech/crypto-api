@@ -1,14 +1,14 @@
-import { Module } from '@nestjs/common';
-import { TokenEntity } from 'entities';
+import { JwtConfigModule } from '@/config/jwt/jwt.config-module';
+import { TypeOrmInfraModule } from '@/config/typeorm/typeorm.infra-module';
+import { EthereumModule } from '@/eth/eth.module';
 import { UsersModule } from '@/users/users.module';
+import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { TokenEntity } from 'entities';
+import { AuthWeb3Service } from './auth-web3.service';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './strategy/Jwt.strategy';
-import { JwtConfigModule } from '@/config/jwt/jwt.config-module';
-import { TypeOrmInfraModule } from '@/config/typeorm/typeorm.infra-module';
-import { AuthWeb3Service } from './auth-web3.service';
-import { EthereumModule } from '@/ethereum/ethereum.module';
 
 @Module({
   imports: [
