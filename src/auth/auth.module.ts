@@ -8,11 +8,13 @@ import { JwtStrategy } from './strategy/Jwt.strategy';
 import { JwtConfigModule } from '@/config/jwt/jwt.config-module';
 import { TypeOrmInfraModule } from '@/config/typeorm/typeorm.infra-module';
 import { AuthWeb3Service } from './auth-web3.service';
+import { EthereumModule } from '@/ethereum/ethereum.module';
 
 @Module({
   imports: [
     UsersModule,
     JwtConfigModule,
+    EthereumModule,
     TypeOrmInfraModule,
     TypeOrmModule.forFeature([TokenEntity]),
   ],

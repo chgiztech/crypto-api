@@ -1,17 +1,17 @@
 import { IsString } from 'class-validator';
-import { Env } from '../utils/env.decorator';
+import { EnvValue } from '../utils/env-value.decorator';
 
 export class EthereumConfig {
   @IsString()
-  @Env()
+  @EnvValue()
   public readonly ETH_RPC_BASE_URL: string;
 
   @IsString()
-  @Env()
+  @EnvValue()
   public readonly ETH_RPC_AUTH_USERNAME: string;
 
   @IsString()
-  @Env()
+  @EnvValue()
   public readonly ETH_RPC_AUTH_PASSWORD: string;
 
   public get host() {

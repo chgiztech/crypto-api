@@ -1,33 +1,33 @@
 import { IsBoolean, IsInt, IsString } from 'class-validator';
-import { Env } from '../utils/env.decorator';
+import { EnvValue } from '../utils/env-value.decorator';
 
 export class TypeOrmConfig {
   @IsString()
-  @Env({ required: true })
+  @EnvValue()
   public readonly TYPEORM_HOST: string;
 
   @IsInt()
-  @Env({ required: true })
+  @EnvValue()
   public readonly TYPEORM_PORT: number;
 
   @IsString()
-  @Env({ required: true })
+  @EnvValue()
   public readonly TYPEORM_DATABASE: string;
 
   @IsString()
-  @Env({ required: true })
+  @EnvValue()
   public readonly TYPEORM_USERNAME: string;
 
   @IsString()
-  @Env({ required: true })
+  @EnvValue()
   public readonly TYPEORM_PASSWORD: string;
 
   @IsBoolean()
-  @Env()
+  @EnvValue()
   public readonly TYPEORM_LOGGING: boolean;
 
   @IsBoolean()
-  @Env()
+  @EnvValue()
   public readonly TYPEORM_SYNCHRONIZE: boolean;
 
   public get fullSettings() {
