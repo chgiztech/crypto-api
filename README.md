@@ -1,6 +1,6 @@
-# 🚀 Ethereum API Backend 
+# 🚀 Ethereum API Backend
 
-This project integrates **MetaMask** to fetch balances, send transactions, and interact with the Ethereum blockchain using a Node.js/NestJS backend.
+This project is a backend service built with **NestJS** for interacting with the Ethereum blockchain via Ethereum RPC. It allows querying balances, sending transactions, and retrieving block data.
 
 ## ✨ Features
 
