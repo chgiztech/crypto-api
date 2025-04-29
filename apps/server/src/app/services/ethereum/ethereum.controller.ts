@@ -6,6 +6,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { validateResponse } from 'libs/utils/src';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import {
   EthGetBalanceRequestDto,
   EthGetBalanceResponseDto,
@@ -13,9 +14,8 @@ import {
   EthGetBlockResponseDto,
   EthSendTransactionRequestDto,
   EthSendTransactionResponseDto,
-} from './ethereum.dto';
+} from './dto/ethereum.dto';
 import { EthereumService } from './ethereum.service';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @ApiBearerAuth()
 @ApiTags('ethereum')

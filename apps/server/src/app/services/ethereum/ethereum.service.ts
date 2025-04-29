@@ -4,7 +4,7 @@ import {
   EthGetBalanceRequestDto,
   EthGetBlockByNumberRequestDto,
   EthSendTransactionRequestDto,
-} from './ethereum.dto';
+} from './dto/ethereum.dto';
 
 @Injectable()
 export class EthereumService {

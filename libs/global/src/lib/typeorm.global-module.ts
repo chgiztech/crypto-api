@@ -34,4 +34,4 @@ import * as Entities from '@entity';
     }),
   ],
 })
-export class TypeORMInfraModule {}
+export class TypeORMGlobalModule {}

@@ -1,21 +1,21 @@
 {
-  "name": "nest-infra",
+  "name": "global",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/nest-infra/src",
+  "sourceRoot": "libs/global/src",
   "projectType": "library",
   "targets": {
     "lint": {
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/nest-infra/**/*.ts"]
+        "lintFilePatterns": ["libs/global/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "libs/nest-infra/jest.config.ts"
+        "jestConfig": "libs/global/jest.config.ts"
       }
     }
   },

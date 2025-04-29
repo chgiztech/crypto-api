@@ -18,7 +18,7 @@
       "@common-utils": ["libs/common-utils/src/index.ts"],
       "@dto": ["libs/dto/src/index.ts"],
       "@entity": ["libs/entity/src/index.ts"],
-      "@nest-infra": ["libs/nest-infra/src/index.ts"],
+      "@global": ["libs/global/src/index.ts"],
       "@server/*": ["apps/server/src/*"]
     }
   },
