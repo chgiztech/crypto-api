@@ -1,4 +1,4 @@
-# 🚀 Ethereum Blockchain Integration with MetaMask
+# 🚀 Ethereum API Backend 
 
 This project integrates **MetaMask** to fetch balances, send transactions, and interact with the Ethereum blockchain using a Node.js/NestJS backend.
 
