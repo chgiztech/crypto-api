@@ -1,75 +1,113 @@
-Интеграция Metamask для получения баланса, отправки транзакций и взаимодействия с блокчейном Ethereum.
+# 🚀 Ethereum Blockchain Integration with MetaMask
 
-## Особенности
+This project integrates **MetaMask** to fetch balances, send transactions, and interact with the Ethereum blockchain using a Node.js/NestJS backend.
 
-- Получение баланса Ethereum-адреса.
-- Отправка транзакций с использованием **Metamask**.
-- Получение информации о блоках и транзакциях в сети Ethereum.
+## ✨ Features
 
-### Описание переменных окружения:
+- 🔍 Fetch the ETH balance of a wallet address
 
-| Переменная           | Описание                                                      |
-| -------------------- | ------------------------------------------------------------- |
-| `APP_PORT`           | Порт, на котором будет работать сервер (по умолчанию `3000`). |
-| `APP_ENV`            | Среда выполнения приложения (например, `dev`, `prod`).        |
-| `JWT_REFRESH_SECRET` | Секретный ключ для подписи JWT токенов.                       |
-| `ETH_RPC_URL`        | URL для подключения к сети Ethereum (Infura или аналог).      |
+- 💸 Send Ethereum transactions via **MetaMask**
 
-### 🛠️ Настройка (База данных)
+- 📦 Retrieve block and transaction details from the Ethereum network
 
-| Переменная            | Описание                                                     | Example Value       |
-| --------------------- | ------------------------------------------------------------ | ------------------- |
-| `TYPEORM_DATABASE`    | Название базы данных                                         | `my_database`       |
-| `TYPEORM_USERNAME`    | Имя пользователя                                             | `admin`             |
-| `TYPEORM_PASSWORD`    | Пароль пользователя                                          | `securepassword123` |
-| `TYPEORM_HOST_HOST`   | Хост, где запущена                                           | `localhost` / `db`  |
-| `TYPEORM_SYNCHRONIZE` | Включает автоматическую синхронизацию базы данных с моделью. | `5432`              |
-| `TYPEORM_LOGGING`     | Включает или отключает логирование запросов TypeORM.         | true                |
+---
+## 📦 Prerequisites
 
-### Команды
+- NodeJS version `>=20.0.0` — recommended to use [NVM](https://github.com/nvm-sh/nvm)
+- Linux-based terminals are preferred: `bash`, `shell`, or `git bash`
+- In **VSCode**, install the following extensions:
+  - `ESLint`
+  - `Prettier`
+  - `Nx Console`
 
-Для установки/добавления зависимостей, из корня:
+## ⚙️ Environment Variables
+
+### 🌐 General Configuration
+
+| Variable           | Description                                      |
+| ------------------ | ------------------------------------------------ |
+| APP_PORT           | Port where the server will run (default: 3000)   |
+| APP_ENV            | Application environment (e.g., dev, prod)        |
+| JWT_REFRESH_SECRET | Secret key for signing JWT tokens                |
+| ETH_RPC_URL        | Ethereum network RPC URL (e.g., Infura endpoint) |
+
+### 🛠️ Database Configuration
+
+| Variable            | Description                                | Example           |
+| ------------------- | ------------------------------------------ | ----------------- |
+| TYPEORM_DATABASE    | Name of the database                       | my_database       |
+| TYPEORM_USERNAME    | Database username                          | admin             |
+| TYPEORM_PASSWORD    | Database password                          | securepassword123 |
+| TYPEORM_HOST_HOST   | Host where the database runs               | localhost / db    |
+| TYPEORM_SYNCHRONIZE | Enables auto-sync of DB schema with models | true              |
+| TYPEORM_LOGGING     | Enables or disables TypeORM query logging  | true              |
+
+## 🚀 Getting Started
+
+### Install/Add Dependencies
+
+From the root directory:
 
 ```
 yarn install
 ```
 
-Запустить сервер в режиме разработки:
+**Build the Application**
 
-```bash
+```
+yarn nx run server:build
+```
 
+**Run in Development Mode**
+
+```
 yarn nx run server:dev
 ```
 
-Запустить миграции (если необходимо):
+**Run migrations (if required)**
 
 ```bash
 
 npm run migration:run
 ```
 
-## 📌 Основные возможности
+## 📌 Core API Endpoints
 
-- Auth `auth/login`
+### 🔐 Auth
 
-- Баланс `ethereum/balance?address`
+- **Login**
+    `POST /auth/login`
+---
 
-- Отправка транзакции `ethereum/transaction`
+### 💰 Ethereum Wallet
+
+- **Get Balance**
+    `GET /ethereum/balance?address=<WALLET_ADDRESS>`
+---
+
+### 🔁 Send Transaction
+
+- **Endpoint**
+    `POST /ethereum/transaction`
+
+- **Request Body Example**
 
 ```JSON
 {
   "from": "0x5976c0f3a654b1A9224f2454A80b65B2CC447fD1",
   "to": "0x5976c0f3a654b1A9224f2454A80b65B2CC447fD1",
-  "value": 20,
+  "value": 20
 }
 ```
 
-- Получение блока `ethereum/block`
+### ⛓️ Get Block Details
 
+- **Endpoint**
+    `POST /ethereum/block`
+
+- **Request Body Example**
 ```JSON
 {
   "blockNumber": 100
 }
 ```
-
-- Получение послденего блока `ethereum/latest-block`
