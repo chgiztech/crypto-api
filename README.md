@@ -67,8 +67,7 @@ yarn nx run server:dev
 **Run migrations (if required)**
 
 ```bash
-
-npm run migration:run
+yarn nx run server:migration:run
 ```
 
 ## 📌 Core API Endpoints
