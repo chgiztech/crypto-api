@@ -11,16 +11,15 @@ import {
 } from 'class-validator';
 
 export class AuthRequestDto {
-  @ApiProperty({ description: 'username пользователя' })
+  @ApiProperty()
   @IsString()
   username: string;
 
-  @ApiProperty({ description: 'Пароль пользователя' })
+  @ApiProperty()
   @IsString()
   password: string;
 
   @ApiProperty({
-    description: 'Код с двухфакторной аутентификатора',
     required: false,
   })
   @IsNumberString()
@@ -97,7 +96,6 @@ export class AuthResponseDto extends PickType(JwtResponseDto, [
 
 export class UpdateUserPasswordRequestDto {
   @ApiProperty({
-    description: 'Текущий пароль',
     example: 'abc',
   })
   @IsString()
@@ -105,7 +103,6 @@ export class UpdateUserPasswordRequestDto {
   readonly currentPassword: string;
 
   @ApiProperty({
-    description: 'Новый пароль',
     example: 'abcd',
   })
   @IsString()
@@ -113,7 +110,6 @@ export class UpdateUserPasswordRequestDto {
   readonly newPassword: string;
 
   @ApiProperty({
-    description: 'Подтверждение нового пароля',
     example: 'abcd',
   })
   @IsString()
